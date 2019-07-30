@@ -1,0 +1,53 @@
+<script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+
+<div class='container' id='app'>
+	<form @submit.prevent="send()">
+		<div class='form-group'>
+			<label>Request Url</label>
+			<input v-model='url' name='url' class='form-control'>
+		</div>
+		<div class='form-group'>
+			<label>Method</label>
+			<select v-model='method' class='form-control'>
+				<option value='GET'>GET</option>
+				<option value='POST'>POST</option>
+			</select>
+		</div>
+		<div v-if='method != "GET"' class='form-group'>
+			<label>Request data</label>
+			<textarea v-model='request_data' class='form-control' rows='5'></textarea>
+		</div>
+		<button type='submit' class='btn btn-primary'>Send</button>
+		<hr>
+		<div class='form-group'>
+			<label>Response data</label>
+			<textarea v-model='response_data' class='form-control' rows='20'></textarea>
+		</div>
+	</form>
+</div>
+
+<script>
+var app = new Vue({    
+    el: '#app',
+    data: {        
+        url : '',
+		method : 'GET',
+		request_data : '',
+		response_data: ''
+    },
+	methods : {
+		send : function() {		
+			if(this.method == 'GET') {
+				fetch(this.url).then(resp => resp.json()).then(result => this.response_data = JSON.stringify(result, null, 2));
+			}else {
+				fetch(this.url, {
+					method: this.method,
+					headers: {"Content-Type" : "application/json"},
+					body: this.request_data
+				}).then(resp => resp.json()).then(result => this.response_data = JSON.stringify(result, null, 2));
+			}			
+		}		
+	}
+})
+</script>
