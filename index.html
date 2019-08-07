@@ -1,4 +1,42 @@
-<ul>
-    <li><a href='programming_for_beginner'>Lập trình cho người mới học</a></li> 
-    <li><a href='python_docs'>Lập trình python từ cơ bản đến nâng cao</a></li> 
-</ul>
+<script src="js/vue.js"></script>
+<script src="js/main.js"></script>
+<link rel="stylesheet" href="css/bootstrap.css">
+
+<div id="app" class="container">
+    <form class="mt-3" @submit.prevent="search()">
+        <input name='keyword' v-model='keyword' class="form-control" placeholder="Tìm sản phẩm" >
+    </form>
+
+    <ul class="list-unstyled row">    
+        <li v-for='p in products' class="list-item col-sm-4 mt-3">
+            <div>
+                <a href="#">
+                    <img :src="p.img_url" style="width:95%">
+                </a>
+                <div style='display:flex'>
+                    <h5 >
+                        <a href="#">{{p.code }} {{ p.name }}, {{ p.price }}Đ</a>
+                    </h5>                    
+                </div>
+            </div>
+        </li>    
+    </ul>
+</div>
+
+<script>
+var app = new Vue({
+    el: '#app',
+    data: {
+        products: [],
+		keyword: ''
+    },
+	methods : {
+		search : async function() {
+			this.products = await this.get('http://localhost:5000/products', {keyword: this.keyword});
+		}
+	},
+    created : async function() {
+        this.products = await this.get('http://localhost:5000/products');
+    }
+})
+</script>
