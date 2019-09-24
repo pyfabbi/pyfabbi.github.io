@@ -1,4 +1,0 @@
-https://selenium-python.readthedocs.io/installation.html
-https://www.investing.com/currencies/usd-vnd
-https://pixabay.com
-https://vision.googleapis.com/v1/images:annotate
